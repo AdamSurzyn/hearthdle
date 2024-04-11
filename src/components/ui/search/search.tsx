@@ -1,37 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../ui/search/search.scss";
-import { useCardsQuery } from "../../hooks/cardsQuery";
 import { CardCommonAttributes } from "./searchTypes";
 import Scroll from "./scroll";
 import SearchList from "./searchList";
 import { CardsQueryData } from "./searchTypes";
+import { useQuery } from "react-query";
+import { allCards } from "../../../features/getCards";
 
 const Search = () => {
-  let typingTimer: NodeJS.Timeout | undefined;
   const [searchField, setSearchField] = useState("");
-  const { cards, isLoading, error }: CardsQueryData =
-    useCardsQuery() as CardsQueryData;
+  const [inputValue, setInputValue] = useState("");
+  const {
+    error,
+    data,
+    isLoading,
+  } = useQuery<CardsQueryData, Error>({
+    queryKey: ["cardsQuery"],
+    queryFn: allCards,
+  });
+
+  useEffect(() => {
+    const typingTimer = setTimeout(() => {
+      setSearchField(inputValue);
+    }, 400);
+
+    return () => {
+      clearTimeout(typingTimer);
+    }
+
+  }, [inputValue])
+
   //! Czy to jest bezpieczne? Nie moglem w zaden inny sposob sprawic, zeby dzialalo...
   if (isLoading) {
     return <div className="card-search-container">Loading...</div>;
     //! Czy posiadanie tej samej klasy co kontener searchu jest ok, zeby miec loading w tej samej pozycji co searchbar?
   }
 
-  if (error) {
-    return <div>An error occured : {error.message}</div>;
+  if (!data || error) {
+    return <div>An error occured : {error!.message}</div>;
   }
 
-  const filteredCards = cards.cards.filter((card: CardCommonAttributes) => {
+  const filteredCards = data.cards.filter((card) => {
     return card.name.toLowerCase().includes(searchField);
   });
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    clearTimeout(typingTimer);
-    const inputValue = e.target.value;
+    setInputValue(e.target.value);
+  }
 
-    typingTimer = setTimeout(() => {
-      setSearchField(inputValue);
-    }, 400);
-  };
   return (
     <div className="card-search-container">
       <div className="card-search-list-container">
@@ -40,8 +55,9 @@ const Search = () => {
           type="search"
           onChange={handleSearchInputChange}
           placeholder="What card?"
+          value={inputValue}
         ></input>
-        {searchField && cards.cards !== undefined && (
+        {searchField && data.cards.length !== 0 && (
           <Scroll>
             <SearchList filteredCards={filteredCards}></SearchList>
           </Scroll>

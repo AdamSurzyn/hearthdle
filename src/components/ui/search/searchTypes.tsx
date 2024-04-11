@@ -15,7 +15,7 @@ export interface CardCommonAttributes {
 }
 
 export interface CardsQueryData {
-  cards: any;
+  cards: CardCommonAttributes[];
   isLoading: boolean;
   error?: Error;
 }
