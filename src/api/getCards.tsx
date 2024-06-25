@@ -1,6 +1,6 @@
 import clientToken from "./hsToken";
 
-export const allCards = async () => {
+export const getAllCards = async () => {
   try {
     const access_token = await clientToken();
     const response = await fetch(

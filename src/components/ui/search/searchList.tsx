@@ -1,6 +1,6 @@
 import React from "react";
 import { SearchCard } from "./searchCard";
-import { CardCommonAttributes } from "./searchTypes";
+import { CardCommonAttributes } from "../../../types/searchTypes";
 
 interface FilteredCardsProps {
   filteredCards: CardCommonAttributes[];

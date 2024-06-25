@@ -1,28 +1,19 @@
 import React, { useState } from "react";
 import "../../ui/search/search.scss";
-import { CardCommonAttributes } from "./searchTypes";
+import { CardCommonAttributes } from "../../../types/searchTypes";
 import Scroll from "./scroll";
 import SearchList from "./searchList";
-import { CardsQueryData } from "./searchTypes";
+import { CardsQueryData } from "../../../types/searchTypes";
 import { useQuery } from "react-query";
-import { allCards } from "../../../features/getCards";
+import { getAllCards } from "../../../api/getCards";
 const Search = () => {
-  let typingTimer: NodeJS.Timeout | undefined;
+  let typingTimer: NodeJS.Timeout;
   const [searchField, setSearchField] = useState("");
-  const useQueryCards = () => {
-    const {
-      error,
-      data: cards,
-      isLoading,
-    } = useQuery<CardsQueryData, Error>({
-      queryKey: ["cardsQuery"],
-      queryFn: allCards,
-    });
 
-    return { cards, isLoading, error };
-  };
-
-  const { cards, isLoading, error } = useQueryCards();
+  const { error, data, isLoading } = useQuery<CardsQueryData, Error>({
+    queryKey: ["cardsQuery"],
+    queryFn: getAllCards,
+  });
 
   if (isLoading) {
     return <div className="card-search-container">Loading...</div>;
@@ -32,9 +23,10 @@ const Search = () => {
     return <div>An error occured : {error.message}</div>;
   }
 
-  const filteredCards = cards?.cards.filter((card: CardCommonAttributes) => {
+  const filteredCards = data?.cards.filter((card: CardCommonAttributes) => {
     return card.name.toLowerCase().includes(searchField);
   });
+  //Waits 400ms to search after input
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     clearTimeout(typingTimer);
     const inputValue = e.target.value;
@@ -52,7 +44,7 @@ const Search = () => {
           onChange={handleSearchInputChange}
           placeholder="What card?"
         ></input>
-        {searchField && cards?.cards !== undefined && (
+        {searchField && data?.cards !== undefined && (
           <Scroll>
             <SearchList filteredCards={filteredCards}></SearchList>
           </Scroll>

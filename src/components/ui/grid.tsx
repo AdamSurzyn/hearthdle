@@ -1,13 +1,30 @@
-import React from "react";
 import "../ui/grid.scss";
-const Grid = () => {
+import { CardsComparisonAndNamesArr } from "../../types/gameReducerTypes";
+
+const Grid = ({
+  cardsComparisonArr,
+}: {
+  cardsComparisonArr: CardsComparisonAndNamesArr;
+}) => {
+  if (!cardsComparisonArr) {
+    return null;
+  }
+  console.log(cardsComparisonArr);
+  //!Musze tu wrzucic wlasciwe nazwy, a nie tylko, czy jest to true, false etc.
   return (
     <div className="cards-grid-container">
-      <div className="card">Example1</div>
-      <div className="card">Example2</div>
-      <div className="card">Example3</div>
+      {cardsComparisonArr.map((card, id) => (
+        <div className="card-comparison" key={id}>
+          <div className="card-prop">{card.className}</div>
+          <div className="card-prop">{card.manaCostCorrect.toString()}</div>
+          <div className="card-prop">{card.cardSet}</div>
+          <div className="card-prop">{card.cardType}</div>
+        </div>
+      ))}
     </div>
   );
 };
+
+//
 
 export default Grid;

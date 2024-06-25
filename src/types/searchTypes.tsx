@@ -12,6 +12,9 @@ export interface CardCommonAttributes {
   rarityId: number;
   slug: string;
   text: string;
+  class?: string;
+  cardType?: string;
+  cardSet?: string;
 }
 
 export interface CardsQueryData {
