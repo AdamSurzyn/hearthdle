@@ -20,12 +20,7 @@ import { useChosenCardContext } from "../contexts/CardsContext";
 import { useGameContext } from "../contexts/GameStateContext";
 import { useEffect, useReducer, useState } from "react";
 import { gameReducer, initialGameState } from "../reducers/gameReducers";
-import {
-  GameAction,
-  GameActionKind,
-  GameStateType,
-  GameState,
-} from "../types/gameReducerTypes";
+import { GameState } from "../types/gameReducerTypes";
 import { ReplayModal } from "../components/ui/replayModal/replayModal";
 
 const Game = () => {
@@ -36,7 +31,9 @@ const Game = () => {
     queryKey: ["cardsQuery"],
     queryFn: getAllCards,
   });
-
+  const dispatchResetGame = () => {
+    gameDispatch(resetGame());
+  };
   const [currentGameState, gameDispatch] = useReducer(
     gameReducer,
     initialGameState
@@ -90,9 +87,9 @@ const Game = () => {
       )}
       <Grid cardsComparisonArr={userGuessArr} />
 
-      {currentGameState.gameState === "End" && (
+      {currentGameState.gameState === GameState.End && (
         <ReplayModal
-          onReset={resetGame}
+          onReset={dispatchResetGame}
           gameState={currentGameState}
         ></ReplayModal>
       )}
