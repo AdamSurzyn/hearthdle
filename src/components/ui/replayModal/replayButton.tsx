@@ -1,5 +1,5 @@
 import React from "react";
-import "./replayButton.scss";
+import "./modalButton.scss";
 import { ReplayButtonProps } from "../../../types/modalTypes";
 // Define the props type for the component
 
@@ -8,8 +8,8 @@ export const ReplayButton: React.FC<ReplayButtonProps> = ({ onReset }) => {
   // Handle button click to toggle the replay state
   return (
     <div className="replay-button-container">
-      <button className="replay-button" onClick={onReset}>
-        <span>Replay?</span>
+      <button className="modal-button" onClick={onReset}>
+        <span>Replay</span>
       </button>
     </div>
   );
