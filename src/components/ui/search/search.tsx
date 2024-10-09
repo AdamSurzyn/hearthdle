@@ -9,8 +9,6 @@ import { useQuery } from "react-query";
 import { getAllCards } from "../../../api/getCards";
 import { GameScoreType } from "../../../types/modalTypes";
 const Search = ({ gameState }: GameScoreType) => {
-  let typingTimer: NodeJS.Timeout;
-
   const [searchField, setSearchField] = useState("");
 
   const { error, data, isLoading } = useQuery<CardsQueryData, Error>({
@@ -35,7 +33,11 @@ const Search = ({ gameState }: GameScoreType) => {
   const filteredCards = data?.cards.filter((card: CardCommonAttributes) => {
     return card.name.toLowerCase().includes(searchField.toLowerCase());
   });
-
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setShowResults(false);
+    }
+  };
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setSearchField(inputValue);
@@ -56,6 +58,8 @@ const Search = ({ gameState }: GameScoreType) => {
           type="search"
           onChange={handleSearchInputChange}
           placeholder="What card?"
+          value={searchField}
+          onKeyDown={handleKeyDown}
         ></input>
         {showResults && searchField && data?.cards !== undefined && (
           <Scroll>
