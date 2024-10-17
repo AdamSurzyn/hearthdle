@@ -8,9 +8,8 @@ import { CardsQueryData } from "../../../types/searchTypes";
 import { useQuery } from "react-query";
 import { getAllCards } from "../../../api/getCards";
 import { GameScoreType } from "../../../types/modalTypes";
+import { useChosenCardContext } from "../../../contexts/CardsContext";
 const Search = ({ gameState }: GameScoreType) => {
-  let typingTimer: NodeJS.Timeout;
-
   const [searchField, setSearchField] = useState("");
 
   const { error, data, isLoading } = useQuery<CardsQueryData, Error>({
@@ -19,6 +18,8 @@ const Search = ({ gameState }: GameScoreType) => {
   });
   const searchRef = useRef<HTMLDivElement | null>(null);
   const { showResults, setShowResults } = useUnclick(searchRef);
+  const [focusedIndex, setFocusedIndex] = useState<number>(0);
+  const { setChosenCard } = useChosenCardContext();
   useEffect(() => {
     if (gameState.gameState === "End") {
       setSearchField("");
@@ -42,6 +43,20 @@ const Search = ({ gameState }: GameScoreType) => {
     setShowResults(true);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setFocusedIndex((prev) =>
+        prev < filteredCards.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setFocusedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    } else if (e.key === "Enter") {
+      setChosenCard(filteredCards[focusedIndex]);
+    }
+  };
+
   return (
     <div
       className={
@@ -50,16 +65,20 @@ const Search = ({ gameState }: GameScoreType) => {
           : "card-search-container-disabled"
       }
     >
-      <div ref={searchRef} className="card-search-list-container">
+      <div className="card-search-list-container" onKeyDown={handleKeyDown}>
         <input
           className="card-search"
           type="search"
           onChange={handleSearchInputChange}
           placeholder="What card?"
+          value={searchField}
         ></input>
         {showResults && searchField && data?.cards !== undefined && (
           <Scroll>
-            <SearchList filteredCards={filteredCards}></SearchList>
+            <SearchList
+              filteredCards={filteredCards}
+              focusIndex={focusedIndex}
+            ></SearchList>
           </Scroll>
         )}
       </div>

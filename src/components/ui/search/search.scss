@@ -53,11 +53,18 @@
     @include search-style();
     margin-top: 8px;
     padding: 8px;
-    border: 3px solid #cc8100;
-    border-radius: 5px;
     background-color: #2f3640;
     color: #dac9a1;
     font-size: 16px;
+    border: none;
+    outline: none;
+    list-style-type: none;
+    list-style-position: inside;
+}   
+
+.search-card--focus {
+    @extend .search-card;
+    background-color: #535f6f;
 }
 
 .scroll {
@@ -69,4 +76,9 @@
     left: 0;
     width: 100%;
     z-index: 1;
+
+    ul {
+        padding: 0px;
+        outline: none;
+    }
 }
