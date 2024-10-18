@@ -1,14 +1,14 @@
-.replay-button,
-.replay-button *,
-.replay-button :after,
-.replay-button :before,
-.replay-button:after,
-.replay-button:before {
+.modal-button,
+.modal-button *,
+.modal-button :after,
+.modal-button :before,
+.modal-button:after,
+.modal-button:before {
     border: 0 solid;
     box-sizing: border-box;
 }
 
-.replay-button {
+.modal-button {
     -webkit-tap-highlight-color: transparent;
     -webkit-appearance: button;
     background-color: #2f3640;
@@ -22,24 +22,24 @@
     padding: 0;
 }
 
-.replay-button:disabled {
+.modal-button:disabled {
     cursor: default;
 }
 
-.replay-button:-moz-focusring {
+.modal-button:-moz-focusring {
     outline: auto;
 }
 
-.replay-button svg {
+.modal-button svg {
     display: block;
     vertical-align: middle;
 }
 
-.replay-button [hidden] {
+.modal-button [hidden] {
     display: none;
 }
 
-.replay-button {
+.modal-button {
     background: none;
     box-sizing: border-box;
     color: #dac9a1;
@@ -51,7 +51,7 @@
     text-transform: uppercase;
 }
 
-.replay-button span {
+.modal-button span {
     background: #2f3640;
     border: 3px solid #cc8100;
     border-radius: 999px;
@@ -62,7 +62,7 @@
     position: absolute;
 }
 
-.replay-button:hover span {
+.modal-button:hover span {
     -webkit-animation: rubberBand 0.8s;
     animation: rubberBand 0.8s;
 }
@@ -129,6 +129,10 @@
 
 .replay-button-container{
 
-    grid-row-start: 8;
+    grid-row-start: 7;
 
+}
+
+.return-button-container{
+    grid-row-start: 8;
 }
