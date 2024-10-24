@@ -3,7 +3,6 @@ import { calculatePercentOfWins } from "../../../utils/utils";
 import { GameScoreType } from "../../../types/modalTypes";
 import "./replayScore.scss";
 export const ReplayScore = ({ gameState }: GameScoreType) => {
-  console.log(gameState);
   const percentOfWins = calculatePercentOfWins(
     gameState.score,
     gameState.totalGuesses

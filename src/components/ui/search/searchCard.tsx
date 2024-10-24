@@ -1,19 +1,40 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { CardCommonAttributes } from "../../../types/searchTypes";
 import { useChosenCardContext } from "../../../contexts/CardsContext";
 interface SearchCardProps {
   cardData: CardCommonAttributes;
+  className: string;
 }
 
-export const SearchCard: React.FC<SearchCardProps> = ({ cardData }) => {
+export const SearchCard = (
+  { cardData, className }: SearchCardProps,
+  key: number
+) => {
+  const cardRef = useRef<HTMLLIElement>(null);
   const { setChosenCard } = useChosenCardContext();
+
+  useEffect(() => {
+    if (className.includes("search-card--focus") && cardRef.current) {
+      cardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [className]);
 
   const setCurrentChosenCard = () => {
     setChosenCard(cardData);
   };
   return (
-    <div className="search-card" onClick={setCurrentChosenCard}>
+    <li
+      className={className}
+      onClick={setCurrentChosenCard}
+      key={key}
+      ref={cardRef}
+    >
       {cardData.name}
-    </div>
+    </li>
   );
 };
+
+export default SearchCard;

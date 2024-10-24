@@ -9,14 +9,14 @@ $bg-image: url("../assets/1920x1080-hearthstone-background-1920-x-1080-2cx6b3fx3
     height: 100vh;
 }
 
-.container {
+.landing-container {
     @include darkened-background;
     color: white;
     display: grid;
     font-family: "Aboreto";
     width: 100%;
     padding: 20px 0px;
-    h1, .footer, a, .instruction .center{
+    h1, .landing-footer, a, p, .center, h3{
         place-self: center;
     }
 }

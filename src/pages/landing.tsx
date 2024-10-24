@@ -7,7 +7,7 @@ import "./landing.scss";
 
 const Landing = () => {
   return (
-    <div className="container">
+    <div className="landing-container">
       <Header></Header>
       <Instruction></Instruction>
       <PlayButton></PlayButton>
